@@ -23,6 +23,8 @@ private const val PROP_CAST_CONFIGURATION = "cast"
 private const val PROP_CAST_STRATEGY = "strategy"
 private const val PROP_CHROMECAST_CONFIG = "chromecast"
 private const val PROP_CHROMECAST_APPID = "appID"
+private const val PROP_CSS = "css"
+private const val PROP_JS = "js"
 
 object PlayerConfigAdapter {
 
@@ -44,6 +46,16 @@ object PlayerConfigAdapter {
       if (configProps.hasKey(PROP_CHROMELESS)) {
         configBuilder.chromeless(configProps.getBoolean(PROP_CHROMELESS))
       }
+
+      val css = configProps.getString(PROP_CSS);
+      if (css != null) {
+        configBuilder.cssPaths(css);
+      }
+      val js = configProps.getString(PROP_JS);
+      if (js != null) {
+        configBuilder.jsPaths(js);
+      }
+
       applyCastConfigurationFromProps(configBuilder, configProps.getMap(PROP_CAST_CONFIGURATION))
     }
     return configBuilder.build()
