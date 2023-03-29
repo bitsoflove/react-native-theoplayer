@@ -56,6 +56,7 @@ class ReactTHEOplayerView(private val reactContext: ThemedReactContext) :
   private var sourceDescription: SourceDescription? = null
   private val mainHandler = Handler(Looper.getMainLooper())
   private val trackListAdapter = TrackListAdapter()
+  private var evaluateQueue = arrayOf<String>();
 
   var daiIntegration: GoogleDaiIntegration? = null
   var imaIntegration: GoogleImaIntegration? = null
@@ -216,6 +217,9 @@ class ReactTHEOplayerView(private val reactContext: ThemedReactContext) :
         if (seekTime != TIME_UNSET.toDouble()) {
           seekTo(seekTime)
         }
+        if (evaluateQueue.size > 0) {
+          executeJavascriptQueue()
+        }
       }
     }, 1)
   }
@@ -328,6 +332,24 @@ class ReactTHEOplayerView(private val reactContext: ThemedReactContext) :
 
       // reset once used
       this.seekTime = TIME_UNSET.toDouble()
+    }
+  }
+
+  fun evaluateJavascript(script: String) {
+    if (playerView != null) {
+      playerView!!.evaluateJavaScript(script) {}
+    }
+    else {
+      evaluateQueue = evaluateQueue.plus(script)
+    }
+  }
+
+  fun executeJavascriptQueue() {
+    if (playerView != null) {
+      evaluateQueue.forEach {
+        playerView!!.evaluateJavaScript(it) {}
+      }
+      evaluateQueue = arrayOf<String>()
     }
   }
 

@@ -24,6 +24,7 @@ private const val PROP_SELECTED_TEXTTRACK = "selectedTextTrack"
 private const val PROP_SELECTED_AUDIOTRACK = "selectedAudioTrack"
 private const val PROP_SELECTED_VIDEOTRACK = "selectedVideoTrack"
 private const val PROP_TARGET_VIDEOQUALITY = "targetVideoQuality"
+private const val PROP_EVALUATE_JAVASCRIPT = "evaluateJavascript"
 
 class ReactTHEOplayerViewManager : ViewGroupManager<ReactTHEOplayerView>() {
   override fun getName(): String {
@@ -105,6 +106,12 @@ class ReactTHEOplayerViewManager : ViewGroupManager<ReactTHEOplayerView>() {
   @ReactProp(name = PROP_TARGET_VIDEOQUALITY)
   fun setTargetVideoQuality(videoView: ReactTHEOplayerView, uid: ReadableArray) {
     videoView.setTargetVideoQualities(uid)
+  }
+
+
+  @ReactProp(name = PROP_EVALUATE_JAVASCRIPT)
+  fun setEvaluateJavascript(videoView: ReactTHEOplayerView, script: String) {
+    videoView.evaluateJavascript(script)
   }
 
   override fun getExportedCustomDirectEventTypeConstants(): Map<String, Any> {
