@@ -14,6 +14,7 @@ class THEOplayerRCTView: UIView {
     var castEventHandler: THEOplayerRCTCastEventHandler
     var adsConfig = AdsConfig()
     var castConfig = CastConfig()
+    var evaluateQueue: [String] = []
 
     // MARK: Bridged props
     private var src: SourceDescription?
@@ -81,6 +82,7 @@ class THEOplayerRCTView: UIView {
         self.syncPlayerSelectedVideoTrack()
         self.syncPlayerSeek()
         self.syncPlayerFullscreen()
+        self.syncEvaluateScripts()
         if DEBUG_THEOPLAYER_INTERACTION { print("[NATIVE] All props synced with THEOplayer instance.") }
     }
 
@@ -333,6 +335,25 @@ class THEOplayerRCTView: UIView {
                 player.presentationMode = PresentationMode.inline;
                 // if DEBUG_THEOPLAYER_INTERACTION { print("[NATIVE] Taking TheoPlayer out of fullscreen") }
             }
+        }
+    }
+
+    @objc(setEvaluateJavascript:)
+    func setEvaluateJavascript(script: NSString) {
+        if DEBUG_PROP_UPDATES  { print("[NATIVE] evaluate javascript.") }
+        if let player = self.player {
+            player.evaluateJavaScript(script as String);
+        }
+        else {
+            evaluateQueue.append(script as String)
+        }
+    }
+    func syncEvaluateScripts() {
+        if let player = self.player {
+            evaluateQueue.forEach { script in
+                player.evaluateJavaScript(script as String);
+            }
+            evaluateQueue.removeAll();
         }
     }
 

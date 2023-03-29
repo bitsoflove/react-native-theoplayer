@@ -31,6 +31,7 @@ interface THEOplayerRCTViewProps extends THEOplayerViewProps {
   ref: React.RefObject<THEOplayerViewNativeComponent>;
   src: SourceDescription;
   seek?: number;
+  evaluateJavascript?: string;
 
   onNativeSourceChange: () => void;
   onNativeLoadStart: () => void;
@@ -99,6 +100,15 @@ export class THEOplayerView extends PureComponent<THEOplayerViewProps, THEOplaye
     const command = (UIManager as { [index: string]: any })['THEOplayerRCTView'].Commands.destroy;
     const params: any[] = [];
     UIManager.dispatchViewManagerCommand(node, command, params);
+  }
+
+  /**
+   * Evaluate custom javascript on the player instance.
+   *
+   * Important: make sure to call this every time the source prop changes, because this destroys the player and recreates it.
+   */
+  public evaluateJavascript(script: string): void {
+    this.setNativeProps({ evaluateJavascript: script });
   }
 
   public seek(time: number): void {
