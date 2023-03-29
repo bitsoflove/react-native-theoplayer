@@ -18,6 +18,8 @@ class THEOplayerRCTView: UIView {
     // MARK: Bridged props
     private var src: SourceDescription?
     private var license: String?
+    private var cssPath: String?
+    private var jsPath: String?
     private var licenseUrl: String?
     private var chromeless: Bool = true
     private var config: THEOplayerConfiguration?
@@ -118,10 +120,14 @@ class THEOplayerRCTView: UIView {
     private func initPlayer() {
         if DEBUG_THEOPLAYER_INTERACTION { print("[NATIVE] 'lazy' init THEOplayer instance") }
 #if os(iOS)
-        let stylePath = Bundle.main.path(forResource:"style", ofType: "css")
-        let cssPaths = stylePath != nil ? [stylePath!] : []
+        let stylePath = Bundle.main.path(forResource: self.cssPath, ofType: "css")
+        let scripthPath = Bundle.main.path(forResource: self.jsPath, ofType: "js")
+
+        let cssPaths = stylePath != nil ? [stylePath!] : [];
+        let jsPaths = scripthPath != nil ? [scripthPath!] : [];
         self.player = THEOplayer(configuration: THEOplayerConfiguration(chromeless: self.chromeless,
                                                                         cssPaths: cssPaths,
+                                                                        jsPaths: jsPaths,
                                                                         pip: nil,
                                                                         ads: self.playerAdsConfiguration(),
                                                                         cast: self.playerCastConfiguration(),
@@ -148,6 +154,8 @@ class THEOplayerRCTView: UIView {
     func setConfig(configDict: NSDictionary) {
         // store license info
         self.license = configDict["license"] as? String
+        self.cssPath = configDict["css"] != nil ? configDict["css"] as? String : "theoplayer";
+        self.jsPath = configDict["js"] != nil ? configDict["js"] as? String : "theoplayer";
         self.licenseUrl = configDict["licenseUrl"] as? String
         self.chromeless = configDict["chromeless"] as? Bool ?? true
         self.parseAdsConfig(configDict: configDict)

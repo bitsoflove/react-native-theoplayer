@@ -26,4 +26,17 @@ export interface PlayerConfiguration {
    * Sets whether the native player is chromeless (without UI).
    */
   readonly chromeless?: boolean;
+
+  /**
+   * Stylesheet name for skinning theoplayer, tries to load `theoplayer.css` by default.
+   * @default "theoplayer"
+   */
+  css?: string;
+
+  /**
+   * Custom script to execute, tries to load `theoplayer.js` by default.
+   * @default "theoplayer"
+   */
+  js?: string;
+
 }
