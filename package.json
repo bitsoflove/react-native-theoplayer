@@ -26,7 +26,7 @@
     "prepare": "bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
-    "pods": "cd example && pod-install --quiet",
+    "pods": "cd example && pod install --silent",
     "bootstrap": "yarn example && yarn && yarn pods"
   },
   "keywords": [
@@ -49,8 +49,8 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@react-native-community/eslint-config": "^2.0.0",
     "@release-it/conventional-changelog": "^5.1.1",
-    "@types/react": "^17.0.1",
-    "@types/react-native": "0.64.2",
+    "@types/react": "^18.0.31",
+    "@types/react-native": "^0.71.5",
     "commitlint": "^11.0.0",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^7.0.0",
@@ -59,8 +59,8 @@
     "husky": "^6.0.0",
     "pod-install": "^0.1.0",
     "prettier": "^2.0.5",
-    "react": "17.0.1",
-    "react-native": "0.64.2",
+    "react": "^18.2.0",
+    "react-native": "^0.71.4",
     "react-native-builder-bob": "^0.18.0",
     "release-it": "^15.5.0",
     "typescript": "^4.1.3"
@@ -99,8 +99,18 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      "commonjs",
-      "module",
+      [
+        "commonjs",
+        {
+          "configFile": true
+        }
+      ],
+      [
+        "module",
+        {
+          "configFile": true
+        }
+      ],
       [
         "typescript",
         {
